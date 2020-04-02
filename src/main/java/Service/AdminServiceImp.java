@@ -22,7 +22,7 @@ public class AdminServiceImp implements AdminService{
 
     @Override
     public List<User> queryAllAUsers() {
-        return null;
+        return adminDao.queryAllUsers();
     }
 
     @Override

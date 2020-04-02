@@ -21,6 +21,25 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
     private AdminService service = new AdminServiceImp();
     private Gson gson = new Gson();
 
+    @Override
+    protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
+        String requestURI = request.getRequestURI();
+        String which = requestURI.replace("/api/admin/","");
+        if ("allAdmins".equals(which)){
+            allAdmins(request,response);
+        }else if ("allUser".equals(which)){
+            allUser(request,response);
+        }else if (which.contains("deleteAdmins")){
+            String id = request.getParameter("id");
+            deleteAdmins(request,response,id);
+        }else if (which.contains("deleteUser")){
+            String id = request.getParameter("id");
+            deleteUser(request,response,id);
+        }else if (which.contains("searchUser")){
+            String word = request.getParameter("word");
+            getSearchAdmins(request,response,word);
+        }
+    }
 
     @Override
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
@@ -35,7 +54,6 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
             getSearchAdmins(request,response);
         } else if ("changePwd".equals(which)){
         }
-
     }
 
     private void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -55,33 +73,23 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
             System.out.println("Can't be blank");
             result.setCode(0);
             result.setMessage("Can't be blank");
-            System.out.println(gson.toJson(result));
+//            System.out.println(gson.toJson(result));
             return;
         }
 
-
-
-        // Test
-        result.setCode(0);
-        Map<String,String> map = new HashMap<>();
-        map.put("token",responseAdmin.getEmail());
-        map.put("name",responseAdmin.getNickname());
-        result.setData(map);
+        if (requestAdmin != null){
+            result.setCode(0);
+            Map<String,String> map = new HashMap<>();
+            map.put("token",responseAdmin.getEmail());
+            map.put("name",responseAdmin.getNickname());
+            result.setData(map);
+            System.out.println(gson.toJson(result));
+        }
+        else{
+            result.setCode(10000);
+            result.setMessage("Username or Password is wrong");
+        }
         response.getWriter().println(gson.toJson(result));
-
-//        if (requestAdmin != null){
-//            result.setCode(0);
-//            Map<String,String> map = new HashMap<>();
-//            map.put("token",responseAdmin.getEmail());
-//            map.put("name",responseAdmin.getNickname());
-//            result.setData(map);
-//            System.out.println(gson.toJson(result));
-//        }
-//        else{
-//            result.setCode(10000);
-//            result.setMessage("Username or Password is wrong");
-//        }
-//        response.getWriter().println(gson.toJson(result));
     }
 
     private void getSearchAdmins(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -114,33 +122,6 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
         result.setCode(0);
         result.setData(adminList);
         response.getWriter().println(gson.toJson(result));
-    }
-
-
-    
-    
-
-
-
-    @Override
-    protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
-        System.out.println("get");
-        String requestURI = request.getRequestURI();
-        String which = requestURI.replace("api/admin/","");
-        if ("allAdmins".equals(which)){
-            allAdmins(request,response);
-        }else if ("allUser".equals(which)){
-            allUser(request,response);
-        }else if (which.contains("deleteAdmins")){
-            String id = request.getParameter("id");
-            deleteAdmins(request,response,id);
-        }else if (which.contains("deleteUser")){
-            String id = request.getParameter("id");
-            deleteUser(request,response,id);
-        }else if (which.contains("searchUser")){
-            String word = request.getParameter("word");
-            getSearchAdmins(request,response,word);
-        }
     }
 
     private void getSearchAdmins(HttpServletRequest request, HttpServletResponse response, String word) throws IOException {
