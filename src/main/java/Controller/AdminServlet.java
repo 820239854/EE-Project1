@@ -64,8 +64,8 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
         // Test
         result.setCode(0);
         Map<String,String> map = new HashMap<>();
-        map.put("token","admin");
-        map.put("name","admin");
+        map.put("token",responseAdmin.getEmail());
+        map.put("name",responseAdmin.getNickname());
         result.setData(map);
         response.getWriter().println(gson.toJson(result));
 
