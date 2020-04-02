@@ -65,11 +65,11 @@ public class AdminDaoImp implements AdminDao{
 
     @Override
     public int deleteAdmins(String id) {
-        int id1 = Integer.parseInt(id);
+        int index = Integer.parseInt(id);
         QueryRunner queryRunner = new QueryRunner(MyJdbcUtils.getDruidDataSource());
         String sql = "DELETE FROM admin WHERE id=?";
         try {
-            queryRunner.update(sql,id);
+            queryRunner.update(sql,index);
             return 0;
         } catch (SQLException e) {
             e.printStackTrace();

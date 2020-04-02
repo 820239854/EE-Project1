@@ -48,11 +48,12 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
 
         if ("login".equals(which)){
             login(request,response);
-        } else if ("addAdmins".equals(which)){
+        } else if ("addAdminss".equals(which)){
             addAdminss(request,response);
         } else if ("getSearchAdmins".equals(which)){
             getSearchAdmins(request,response);
         } else if ("changePwd".equals(which)){
+            
         }
     }
 
@@ -73,7 +74,6 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
             System.out.println("Can't be blank");
             result.setCode(0);
             result.setMessage("Can't be blank");
-//            System.out.println(gson.toJson(result));
             return;
         }
 
@@ -83,7 +83,6 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
             map.put("token",responseAdmin.getEmail());
             map.put("name",responseAdmin.getNickname());
             result.setData(map);
-            System.out.println(gson.toJson(result));
         }
         else{
             result.setCode(10000);
