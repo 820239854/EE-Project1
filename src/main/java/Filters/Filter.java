@@ -12,7 +12,7 @@ public class Filter implements javax.servlet.Filter {
     }
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
-        HttpServletRequest request = (HttpServletRequest) req;
+         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
 //        System.out.println("hi");
         req.setCharacterEncoding("utf-8");

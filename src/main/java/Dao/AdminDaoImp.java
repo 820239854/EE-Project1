@@ -1,8 +1,10 @@
 package Dao;
 
 import Bean.Admin;
+import Bean.PWD;
 import Bean.User;
 import Utils.MyJdbcUtils;
+import com.alibaba.druid.util.StringUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -34,6 +36,42 @@ public class AdminDaoImp implements AdminDao{
         } catch (SQLException e) {
             e.printStackTrace();
             return 1;
+        }
+    }
+
+    @Override
+    public int changePwd(PWD pwd) throws SQLException {
+        if (StringUtils.isEmpty(pwd.getAdminToken()) ||
+            StringUtils.isEmpty(pwd.getConfirmPwd()) ||
+            StringUtils.isEmpty(pwd.getOldPwd())     ||
+            StringUtils.isEmpty(pwd.getNewPwd())){
+            return 100;
+        }
+        QueryRunner queryRunner = new QueryRunner(MyJdbcUtils.getDruidDataSource());
+        String querySelect = "SELECT pwd FROM admin WHERE email = '" + pwd.getAdminToken() + "'";
+        try {
+            Admin admin = queryRunner.query(querySelect,new BeanHandler<>(Admin.class));
+            if (!pwd.getOldPwd().equals(admin.getPwd())){
+                return 101;
+            }
+            if (pwd.getOldPwd().equals(pwd.getNewPwd())){
+                return 102;
+            }
+            if (!pwd.getNewPwd().equals(pwd.getConfirmPwd())){
+                return 103;
+            }
+            String queryUpdate = "UPDATE admin SET pwd='" + pwd.getConfirmPwd()
+                          + "' WHERE email='" + pwd.getAdminToken()
+                          + "'";
+            int i = queryRunner.update(queryUpdate);
+            if (i == 1){
+                return 0;
+            }else {
+                return 104;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 104;
         }
     }
 

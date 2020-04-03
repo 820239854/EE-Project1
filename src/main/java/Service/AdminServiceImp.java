@@ -1,10 +1,12 @@
 package Service;
 
 import Bean.Admin;
+import Bean.PWD;
 import Bean.User;
 import Dao.AdminDao;
 import Dao.AdminDaoImp;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class AdminServiceImp implements AdminService{
@@ -34,6 +36,9 @@ public class AdminServiceImp implements AdminService{
     public int addAdmin(Admin admin) {
         return adminDao.addAdmin(admin);
     }
+
+    @Override
+    public int changePwd(PWD pwd) throws SQLException {return adminDao.changePwd(pwd);}
 
     @Override
     public List<Admin> queryAllAdmins() {

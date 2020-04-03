@@ -1,6 +1,7 @@
 package Controller;
 
 import Bean.Admin;
+import Bean.PWD;
 import Bean.Result;
 import Bean.User;
 import Service.AdminService;
@@ -12,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,17 +46,52 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
     @Override
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         String requestURI = request.getRequestURI();
-        String which = requestURI.replace("/api/admin/","");
+        String sector = requestURI.replace("/api/admin/","");
 
-        if ("login".equals(which)){
+        if ("login".equals(sector)){
             login(request,response);
-        } else if ("addAdminss".equals(which)){
-            addAdminss(request,response);
-        } else if ("getSearchAdmins".equals(which)){
-            getSearchAdmins(request,response);
-        } else if ("changePwd".equals(which)){
-            
+            return;
         }
+        if ("addAdminss".equals(sector)){
+            addAdminss(request,response);
+            return;
+        }
+        if ("getSearchAdmins".equals(sector)){
+            getSearchAdmins(request,response);
+            return;
+        }
+        if ("changePwd".equals(sector)){
+            try {
+                changePwd(request,response);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+    }
+
+    private void changePwd(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+        String requestBody = HttpUtils.getRequestBody(request);
+        PWD pwd = gson.fromJson(requestBody,PWD.class);
+        int condition = service.changePwd(pwd);
+        Result result = new Result();
+
+        if (condition == 0){
+            result.setCode(0);
+        }else if (condition == 100){
+            result.setCode(1);
+            result.setMessage("Can't be blank");
+        }else if (condition == 101){
+            result.setCode(1);
+            result.setMessage("Old pass is wrong");
+        }else if (condition == 102){
+            result.setCode(1);
+            result.setMessage("Wrong new pass");
+        }else if (condition == 103){
+            result.setCode(1);
+            result.setMessage("The old is not the same as new");
+        }
+        response.getWriter().println(gson.toJson(result));
     }
 
     private void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
