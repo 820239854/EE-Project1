@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Bean\Admin.class
 Controller\AdminServlet.class
 Service\AdminService.class
@@ -9,5 +10,28 @@ Bean\PWD.class
 Dao\AdminDaoImp.class
 Utils\FileUploadUtils.class
 Dao\AdminDao.class
+=======
+Dao\UserDaoImpl.class
+Bean\Admin.class
+Controller\AdminServlet.class
+Service\AdminService.class
+Bean\GoodsUtil\GoodsSpec.class
+Filters\Filter.class
+Service\AdminServiceImp.class
+Utils\HttpUtils.class
+Bean\AdminPwd.class
+Bean\GoodsUtil\Goods.class
+Bean\Result.class
+Service\UserService.class
+Bean\ReplyContent.class
+Dao\AdminDaoImp.class
+Dao\UserDao.class
+Utils\FileUploadUtils.class
+Bean\GoodsUtil\GoodsType.class
+Bean\Message.class
+Controller\UserServlet.class
+Dao\AdminDao.class
+Service\UserServiceImpl.class
+>>>>>>> be2e47a
 Utils\MyJdbcUtils.class
 Bean\User.class

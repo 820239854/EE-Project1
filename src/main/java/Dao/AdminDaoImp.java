@@ -94,18 +94,6 @@ public class AdminDaoImp implements AdminDao{
         return adminList;
     }
 
-    @Override
-    public List<User> queryAllUsers(){
-        QueryRunner queryRunner = new QueryRunner(MyJdbcUtils.getDruidDataSource());
-        String sql = "SELECT * FROM user";
-        List<User> userList = null;
-        try {
-            userList = queryRunner.query(sql,new BeanListHandler<>(User.class));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return userList;
-    }
 
     @Override
     public int deleteAdmins(String id) {
@@ -121,19 +109,6 @@ public class AdminDaoImp implements AdminDao{
         }
     }
 
-    @Override
-    public int deleteUser(String id) {
-        int requestId = Integer.parseInt(id);
-        QueryRunner queryRunner = new QueryRunner(MyJdbcUtils.getDruidDataSource());
-        String sql = "DELETE FROM user WHERE id=?";
-        try{
-            queryRunner.update(sql,requestId);
-            return 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 1;
-        }
-    }
 
     @Override
     public int changePwd(AdminPwd pwd) {
@@ -200,23 +175,7 @@ public class AdminDaoImp implements AdminDao{
         return adminList;
     }
 
-    @Override
-    public List<User> getSearchUser(String word) {
-        QueryRunner queryRunner = new QueryRunner(MyJdbcUtils.getDruidDataSource());
-        String sql = "select * from user where 2=2 ";
-        if (!StringUtils.isEmpty(word)) {
-            sql = sql + "and nickname like '" + word + "%'";
-        }
-        System.out.println(sql);
 
-        List<User> userList = null;
-        try {
-            userList = queryRunner.query(sql, new BeanListHandler<>(User.class));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return userList;
-    }
 
     @Override
     public List<Message> getNoReplyMsg() throws SQLException {

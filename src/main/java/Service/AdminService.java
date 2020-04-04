@@ -16,17 +16,16 @@ public interface AdminService {
     Admin login(Admin admin);
     int addAdmin(Admin admin);
     List<Admin> queryAllAdmins();
-    List<User> queryAllUsers();
     int deletAdmins(String id);
-    int deleteUser(String id);
-
-    List<User> getSearchUser(String word);
 
     List<Admin> getSearchAdmins(Admin admin);
 
+<<<<<<< HEAD
     List<User> queryAllAUsers();
 
 <<<<<<< HEAD
+=======
+>>>>>>> be2e47a
     int changePwd(AdminPwd pwd);
 
     List<Message> getNoReplyMsg() throws SQLException;

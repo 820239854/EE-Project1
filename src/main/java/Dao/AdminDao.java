@@ -16,14 +16,15 @@ public interface AdminDao {
     Admin login(Admin admin);
     int addAdmin(Admin admin);
     List<Admin> queryAllAdmins();
-    List<User> queryAllUsers();
     int deleteAdmins(String id);
+<<<<<<< HEAD
     int deleteUser(String id);
 
 <<<<<<< HEAD
+=======
+>>>>>>> be2e47a
     int changePwd(AdminPwd pwd);
 
-    List<User> getSearchUser(String word);
     List<Admin> getSearchAdmins(Admin admin);
 
     List<Message> getNoReplyMsg() throws SQLException;

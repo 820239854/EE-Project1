@@ -2,6 +2,7 @@ D:\OneDrive\Code\repos\EE-Project1\src\main\java\Utils\FileUploadUtils.java
 D:\OneDrive\Code\repos\EE-Project1\src\main\java\Utils\HttpUtils.java
 D:\OneDrive\Code\repos\EE-Project1\src\main\java\Utils\MyJdbcUtils.java
 D:\OneDrive\Code\repos\EE-Project1\src\main\java\Bean\Result.java
+<<<<<<< HEAD
 D:\OneDrive\Code\repos\EE-Project1\src\main\java\Bean\Admin.java
 D:\OneDrive\Code\repos\EE-Project1\src\main\java\Bean\User.java
 D:\OneDrive\Code\repos\EE-Project1\src\main\java\Controller\AdminServlet.java
@@ -9,5 +10,24 @@ D:\OneDrive\Code\repos\EE-Project1\src\main\java\Service\AdminServiceImp.java
 D:\OneDrive\Code\repos\EE-Project1\src\main\java\Dao\AdminDaoImp.java
 D:\OneDrive\Code\repos\EE-Project1\src\main\java\Service\AdminService.java
 D:\OneDrive\Code\repos\EE-Project1\src\main\java\Bean\PWD.java
+=======
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Bean\Message.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Bean\Admin.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Bean\GoodsUtil\Goods.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Bean\GoodsUtil\GoodsType.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Bean\User.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Dao\UserDaoImpl.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Bean\GoodsUtil\GoodsSpec.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Controller\AdminServlet.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Dao\UserDao.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Service\AdminServiceImp.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Dao\AdminDaoImp.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Controller\UserServlet.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Bean\AdminPwd.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Service\UserService.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Service\AdminService.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Service\UserServiceImpl.java
+D:\OneDrive\Code\repos\EE-Project1\src\main\java\Bean\ReplyContent.java
+>>>>>>> be2e47a
 D:\OneDrive\Code\repos\EE-Project1\src\main\java\Dao\AdminDao.java
 D:\OneDrive\Code\repos\EE-Project1\src\main\java\Filters\Filter.java
