@@ -1,7 +1,11 @@
 package Service;
 
 import Bean.Admin;
+import Bean.AdminPwd;
+import Bean.Message;
 import Bean.User;
+
+import java.sql.SQLException;
 import java.util.List;
 
 public interface AdminService {
@@ -17,4 +21,8 @@ public interface AdminService {
     List<Admin> getSearchAdmins(Admin admin);
 
     List<User> queryAllAUsers();
+
+    int changePwd(AdminPwd pwd);
+
+    List<Message> getNoReplyMsg() throws SQLException;
 }

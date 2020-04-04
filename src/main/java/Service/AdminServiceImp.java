@@ -1,10 +1,13 @@
 package Service;
 
 import Bean.Admin;
+import Bean.AdminPwd;
+import Bean.Message;
 import Bean.User;
 import Dao.AdminDao;
 import Dao.AdminDaoImp;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class AdminServiceImp implements AdminService{
@@ -12,17 +15,22 @@ public class AdminServiceImp implements AdminService{
 
     @Override
     public List<User> getSearchUser(String word) {
-        return null;
+        return adminDao.getSearchUser(word);
     }
 
     @Override
     public List<Admin> getSearchAdmins(Admin admin) {
-        return null;
+        return adminDao.getSearchAdmins(admin);
     }
 
     @Override
     public List<User> queryAllAUsers() {
         return adminDao.queryAllUsers();
+    }
+
+    @Override
+    public int changePwd(AdminPwd pwd) {
+        return adminDao.changePwd(pwd);
     }
 
     @Override
@@ -53,5 +61,10 @@ public class AdminServiceImp implements AdminService{
     @Override
     public int deleteUser(String id) {
         return adminDao.deleteUser(id);
+    }
+
+    @Override
+    public List<Message> getNoReplyMsg() throws SQLException {
+        return adminDao.getNoReplyMsg();
     }
 }

@@ -1,8 +1,12 @@
 package Dao;
 
 import Bean.Admin;
+import Bean.AdminPwd;
+import Bean.GoodsUtil.Goods;
+import Bean.Message;
 import Bean.User;
 import Utils.MyJdbcUtils;
+import com.alibaba.druid.util.StringUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -79,15 +83,119 @@ public class AdminDaoImp implements AdminDao{
 
     @Override
     public int deleteUser(String id) {
-        int id1 = Integer.parseInt(id);
+        int requestId = Integer.parseInt(id);
         QueryRunner queryRunner = new QueryRunner(MyJdbcUtils.getDruidDataSource());
         String sql = "DELETE FROM user WHERE id=?";
         try{
-            queryRunner.update(sql,id);
+            queryRunner.update(sql,requestId);
             return 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return 1;
         }
+    }
+
+    @Override
+    public int changePwd(AdminPwd pwd) {
+        if (StringUtils.isEmpty(pwd.getAdminToken()) || StringUtils.isEmpty(pwd.getOldPwd()) ||
+                StringUtils.isEmpty(pwd.getNewPwd()) || StringUtils.isEmpty(pwd.getConfirmPwd())) {
+            return 100;
+        }
+
+        QueryRunner queryRunner = new QueryRunner(MyJdbcUtils.getDruidDataSource());
+        String sql = "select pwd from admin where email = '" + pwd.getAdminToken() + "'";
+        System.out.println(sql);
+        try {
+            Admin admin = queryRunner.query(sql, new BeanHandler<>(Admin.class));
+            if (!pwd.getOldPwd().equals(admin.getPwd())) {
+                //原密码输入不正确
+                return 101;
+            }
+
+            if (pwd.getOldPwd().equals(pwd.getNewPwd())) {
+                //原密码与新密码一致
+                return 102;
+            }
+
+            if (!pwd.getNewPwd().equals(pwd.getConfirmPwd())) {
+                //两次密码输入不同
+                return 103;
+            }
+
+            //输入正确
+            String sql2 = "UPDATE admin SET pwd='" + pwd.getConfirmPwd() + "' WHERE email='" + pwd.getAdminToken() + "'";
+            int i = queryRunner.update(sql2);
+            if (i == 1) {
+                return 0;
+            } else {
+                return 104;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //异常
+            return 104;
+        }
+
+    }
+
+    @Override
+    public List<Admin> getSearchAdmins(Admin admin) {
+        QueryRunner queryRunner = new QueryRunner(MyJdbcUtils.getDruidDataSource());
+        String sql = "select * from admin where 2=2 ";
+        if (!StringUtils.isEmpty(admin.getNickname())) {
+            sql = sql + "and nickname like '" + admin.getNickname() + "%'";
+        }
+
+        if (!StringUtils.isEmpty(admin.getEmail())) {
+            sql = sql + "and email like '" + admin.getEmail() + "%'";
+        }
+
+        List<Admin> adminList = null;
+        try {
+            adminList = queryRunner.query(sql, new BeanListHandler<>(Admin.class));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return adminList;
+    }
+
+    @Override
+    public List<User> getSearchUser(String word) {
+        QueryRunner queryRunner = new QueryRunner(MyJdbcUtils.getDruidDataSource());
+        String sql = "select * from user where 2=2 ";
+        if (!StringUtils.isEmpty(word)) {
+            sql = sql + "and nickname like '" + word + "%'";
+        }
+        System.out.println(sql);
+
+        List<User> userList = null;
+        try {
+            userList = queryRunner.query(sql, new BeanListHandler<>(User.class));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
+    @Override
+    public List<Message> getNoReplyMsg() throws SQLException {
+        QueryRunner queryRunner = new QueryRunner(MyJdbcUtils.getDruidDataSource());
+        String sql = "SELECT * FROM message where state=1";
+        List<Message> messageList = null;
+        try {
+            messageList = queryRunner.query(sql,new BeanListHandler<>(Message.class));
+            for (Message m : messageList) {
+                User user = queryRunner.query("select name from goods where id='" + m.getUserId()
+                        + "'", new BeanHandler<>(User.class));
+                Goods query = queryRunner.query("SELCET name from goods where id='" + m.getGoodsId()
+                        + "'", new BeanHandler<>(Goods.class));
+                m.setUser(user);
+                m.setGoods(query);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return messageList;
     }
 }
