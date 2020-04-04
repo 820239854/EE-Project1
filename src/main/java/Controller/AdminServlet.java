@@ -1,6 +1,13 @@
 package Controller;
 
+<<<<<<< HEAD
 import Bean.*;
+=======
+import Bean.Admin;
+import Bean.PWD;
+import Bean.Result;
+import Bean.User;
+>>>>>>> origin/master
 import Service.AdminService;
 import Service.AdminServiceImp;
 import Utils.HttpUtils;
@@ -57,6 +64,7 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
     @Override
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         String requestURI = request.getRequestURI();
+<<<<<<< HEAD
         String sector = requestURI.replace("/api/admin/admin/","");
 
         if ("login".equals(sector)){
@@ -67,7 +75,54 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
             getSearchAdmins(request,response);
         } else if ("changePwd".equals(sector)){
             changePwd(request,response);
+=======
+        String sector = requestURI.replace("/api/admin/","");
+
+        if ("login".equals(sector)){
+            login(request,response);
+            return;
         }
+        if ("addAdminss".equals(sector)){
+            addAdminss(request,response);
+            return;
+        }
+        if ("getSearchAdmins".equals(sector)){
+            getSearchAdmins(request,response);
+            return;
+>>>>>>> origin/master
+        }
+        if ("changePwd".equals(sector)){
+            try {
+                changePwd(request,response);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+    }
+
+    private void changePwd(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+        String requestBody = HttpUtils.getRequestBody(request);
+        PWD pwd = gson.fromJson(requestBody,PWD.class);
+        int condition = service.changePwd(pwd);
+        Result result = new Result();
+
+        if (condition == 0){
+            result.setCode(0);
+        }else if (condition == 100){
+            result.setCode(1);
+            result.setMessage("Can't be blank");
+        }else if (condition == 101){
+            result.setCode(1);
+            result.setMessage("Old pass is wrong");
+        }else if (condition == 102){
+            result.setCode(1);
+            result.setMessage("Wrong new pass");
+        }else if (condition == 103){
+            result.setCode(1);
+            result.setMessage("The old is not the same as new");
+        }
+        response.getWriter().println(gson.toJson(result));
     }
 
     private void getSearchUser(HttpServletRequest request, HttpServletResponse response, String word) throws IOException {
@@ -148,8 +203,11 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
             map.put("token",responseAdmin.getEmail());
             map.put("name",responseAdmin.getNickname());
             result.setData(map);
+<<<<<<< HEAD
             System.out.println(gson.toJson(result));
 
+=======
+>>>>>>> origin/master
         }
         else{
             result.setCode(10000);

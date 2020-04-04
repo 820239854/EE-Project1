@@ -1,8 +1,12 @@
 package Dao;
 
 import Bean.Admin;
+<<<<<<< HEAD
 import Bean.AdminPwd;
 import Bean.Message;
+=======
+import Bean.PWD;
+>>>>>>> origin/master
 import Bean.User;
 
 import java.sql.SQLException;
@@ -16,10 +20,14 @@ public interface AdminDao {
     int deleteAdmins(String id);
     int deleteUser(String id);
 
+<<<<<<< HEAD
     int changePwd(AdminPwd pwd);
 
     List<User> getSearchUser(String word);
     List<Admin> getSearchAdmins(Admin admin);
 
     List<Message> getNoReplyMsg() throws SQLException;
+=======
+    int changePwd(PWD admin) throws SQLException;
+>>>>>>> origin/master
 }
