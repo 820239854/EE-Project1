@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/api/admin/*")
+@WebServlet("/api/admin/admin/*")
 public class AdminServlet extends javax.servlet.http.HttpServlet {
     private AdminService service = new AdminServiceImp();
     private Gson gson = new Gson();
@@ -24,7 +24,7 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
     @Override
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         String requestURI = request.getRequestURI();
-        String which = requestURI.replace("/api/admin/","");
+        String which = requestURI.replace("/api/admin/admin/","");
         if ("allAdmins".equals(which)){
             allAdmins(request,response);
         }else if ("allUser".equals(which)){
@@ -44,7 +44,7 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
     @Override
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         String requestURI = request.getRequestURI();
-        String which = requestURI.replace("/api/admin/","");
+        String which = requestURI.replace("/api/admin/admin/","");
 
         if ("login".equals(which)){
             login(request,response);
@@ -58,9 +58,9 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
 
     private void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String requestBody = HttpUtils.getRequestBody(request);
-        Result result = new Result();
         Admin requestAdmin = gson.fromJson(requestBody, Admin.class);
         Admin responseAdmin = service.login(requestAdmin);
+        Result result = new Result();
 
         if (StringUtils.isEmpty(requestBody)){
             result.setCode(0);
@@ -73,23 +73,27 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
             System.out.println("Can't be blank");
             result.setCode(0);
             result.setMessage("Can't be blank");
-//            System.out.println(gson.toJson(result));
             return;
         }
 
         if (requestAdmin != null){
             result.setCode(0);
-            Map<String,String> map = new HashMap<>();
+            Map<String,Object> map = new HashMap<>();
             map.put("token",responseAdmin.getEmail());
             map.put("name",responseAdmin.getNickname());
+//            map.put("token","admin");
+//            map.put("name","admin");
             result.setData(map);
             System.out.println(gson.toJson(result));
+
         }
         else{
             result.setCode(10000);
             result.setMessage("Username or Password is wrong");
         }
         response.getWriter().println(gson.toJson(result));
+
+
     }
 
     private void getSearchAdmins(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -117,10 +121,12 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
     }
 
     private void allAdmins(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        List<Admin> adminList = service.queryAllAdmins();
         Result result = new Result();
+
+        List<Admin> adminList = service.queryAllAdmins();
         result.setCode(0);
         result.setData(adminList);
+
         response.getWriter().println(gson.toJson(result));
     }
 

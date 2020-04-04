@@ -14,7 +14,10 @@ public class Filter implements javax.servlet.Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
-//        System.out.println("hi");
+
+//        System.out.println( request.getMethod());
+//        System.out.println(request.getRequestURI());
+
         req.setCharacterEncoding("utf-8");
         resp.setContentType("text/html,charset=utf-8");
 
