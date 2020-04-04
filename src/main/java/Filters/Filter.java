@@ -15,9 +15,6 @@ public class Filter implements javax.servlet.Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
 
-//        System.out.println( request.getMethod());
-//        System.out.println(request.getRequestURI());
-
         req.setCharacterEncoding("utf-8");
         resp.setContentType("text/html,charset=utf-8");
 

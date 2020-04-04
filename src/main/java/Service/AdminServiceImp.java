@@ -13,20 +13,12 @@ import java.util.List;
 public class AdminServiceImp implements AdminService{
     private AdminDao adminDao = new AdminDaoImp();
 
-    @Override
-    public List<User> getSearchUser(String word) {
-        return adminDao.getSearchUser(word);
-    }
 
     @Override
     public List<Admin> getSearchAdmins(Admin admin) {
         return adminDao.getSearchAdmins(admin);
     }
 
-    @Override
-    public List<User> queryAllAUsers() {
-        return adminDao.queryAllUsers();
-    }
 
     @Override
     public int changePwd(AdminPwd pwd) {
@@ -49,19 +41,10 @@ public class AdminServiceImp implements AdminService{
     }
 
     @Override
-    public List<User> queryAllUsers() {
-        return adminDao.queryAllUsers();
-    }
-
-    @Override
     public int deletAdmins(String id) {
         return adminDao.deleteAdmins(id);
     }
 
-    @Override
-    public int deleteUser(String id) {
-        return adminDao.deleteUser(id);
-    }
 
     @Override
     public List<Message> getNoReplyMsg() throws SQLException {

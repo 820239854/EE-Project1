@@ -1,5 +1,4 @@
 package Controller;
-
 import Bean.*;
 import Service.AdminService;
 import Service.AdminServiceImp;
@@ -17,37 +16,49 @@ import java.util.Map;
 
 @WebServlet("/api/admin/admin/*")
 public class AdminServlet extends javax.servlet.http.HttpServlet {
-    private AdminService service = new AdminServiceImp();
+    private AdminService adminService = new AdminServiceImp();
     private Gson gson = new Gson();
 
     @Override
     protected void doGet(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         String requestURI = request.getRequestURI();
-        String sector = requestURI.replace("/api/admin/admin/","");
-        if ("allAdmins".equals(sector)){
-            allAdmins(request,response);
-        }else if ("allUser".equals(sector)){
-            allUser(request,response);
-        }else if (sector.contains("deleteAdmins")){
+        String which = requestURI.replace("/api/admin/admin/", "");
+
+        if ("allAdmins".equals(which)) {
+            allAdmins(request, response);
+        } else if (which.contains("deleteAdmins")) {
             String id = request.getParameter("id");
-            deleteAdmins(request,response,id);
-        }else if (sector.contains("deleteUser")){
-            String id = request.getParameter("id");
-            deleteUser(request,response,id);
-        }else if (sector.contains("searchUser")){
-            String word = request.getParameter("word");
-            getSearchUser(request,response,word);
-        }else if ("noReplyMsg".equals(sector)){
+            deleteAdmins(request, response, id);
+        } else if ("noReplyMsg".equals(which)) {
             try {
-                getNoReplyMsg(request,response);
+                getNoReplyMsg(request, response);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        } else if ("getType".equals(which)) {
+            getTypes(request, response);
+        } else if (which.contains("getGoodsByType")) {
+            String typeId = request.getParameter("typeId");
+            getGoodsByType(request, response, typeId);
+        } else if (which.contains("deleteOrder")) {
+           /* String id = request.getParameter("id");
+            deleteOrder(request, response, id);*/
+        } else if ("repliedMsg".equals(which)) {
+            getRepliedMsg(request, response);
         }
     }
 
+    private void getRepliedMsg(HttpServletRequest request, HttpServletResponse response) {
+    }
+
+    private void getGoodsByType(HttpServletRequest request, HttpServletResponse response, String typeId) {
+    }
+
+    private void getTypes(HttpServletRequest request, HttpServletResponse response) {
+    }
+
     private void getNoReplyMsg(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
-        List<Message> massageList = service.getNoReplyMsg();
+        List<Message> massageList = adminService.getNoReplyMsg();
         Result result = new Result();
         result.setCode(0);
         result.setData(massageList);
@@ -57,37 +68,46 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
     @Override
     protected void doPost(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         String requestURI = request.getRequestURI();
-        String sector = requestURI.replace("/api/admin/admin/","");
+        String which = requestURI.replace("/api/admin/admin/", "");
 
-        if ("login".equals(sector)){
-            login(request,response);
-        } else if ("addAdmins".equals(sector)){
-            addAdminss(request,response);
-        } else if ("getSearchAdmins".equals(sector)){
-            getSearchAdmins(request,response);
-        } else if ("changePwd".equals(sector)){
-            changePwd(request,response);
+        if ("login".equals(which)) {
+            login(request, response);
+        } else if ("addAdminss".equals(which)) {
+            addAdminss(request, response);
+        } else if ("getSearchAdmins".equals(which)) {
+            getSearchAdmins(request, response);
+        } else if ("changePwd".equals(which)) {
+            changePwd(request, response);
+        } else if ("addType".equals(which)) {
+            addType(request, response);
+        } else if ("addGoods".equals(which)) {
+            addGoods(request, response);
+        } else if ("imgUpload".equals(which)) {
+            imgUpload(request, response);
+        } else if ("reply".equals(which)) {
+            reply(request, response);
         }
     }
 
-    private void getSearchUser(HttpServletRequest request, HttpServletResponse response, String word) throws IOException {
-        List<User> searchUser = service.getSearchUser(word);
-        Result result = new Result();
-        if (searchUser == null){
-            result.setCode(1);
-            result.setMessage("Failed");
-        }else {
-            result.setCode(0);
-            result.setData(searchUser);
-        }
-        response.getWriter().println(gson.toJson(result));
+    private void addGoods(HttpServletRequest request, HttpServletResponse response) {
     }
+
+    private void reply(HttpServletRequest request, HttpServletResponse response) {
+    }
+
+    private void addType(HttpServletRequest request, HttpServletResponse response) {
+    }
+
+    private void imgUpload(HttpServletRequest request, HttpServletResponse response) {
+
+    }
+
 
     private void getSearchAdmins(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String requestBody = HttpUtils.getRequestBody(request);
         Admin admin = gson.fromJson(requestBody,Admin.class);
         Result result = new Result();
-        List<Admin> searchAdmins = service.getSearchAdmins(admin);
+        List<Admin> searchAdmins = adminService.getSearchAdmins(admin);
         if (searchAdmins == null){
             result.setCode(1);
             result.setMessage("Error");
@@ -102,7 +122,7 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
         String requestBody = HttpUtils.getRequestBody(request);
         AdminPwd pwd = gson.fromJson(requestBody, AdminPwd.class);
         Result result = new Result();
-        int i = service.changePwd(pwd);
+        int i = adminService.changePwd(pwd);
         if (i==0){
             result.setCode(0);
         }else{
@@ -125,7 +145,7 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
     private void login(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String requestBody = HttpUtils.getRequestBody(request);
         Admin requestAdmin = gson.fromJson(requestBody, Admin.class);
-        Admin responseAdmin = service.login(requestAdmin);
+        Admin responseAdmin = adminService.login(requestAdmin);
         Result result = new Result();
 
         if (StringUtils.isEmpty(requestBody)){
@@ -164,7 +184,7 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
         String requestBody = HttpUtils.getRequestBody(request);
         Admin admin = gson.fromJson(requestBody,Admin.class);
         Result result = new Result();
-        int i = service.addAdmin(admin);
+        int i = adminService.addAdmin(admin);
         result.setCode(i);
         response.getWriter().println(gson.toJson(result));
     }
@@ -172,32 +192,19 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
     private void allAdmins(HttpServletRequest request,HttpServletResponse response) throws IOException {
         Result result = new Result();
 
-        List<Admin> adminList = service.queryAllAdmins();
+        List<Admin> adminList = adminService.queryAllAdmins();
         result.setCode(0);
         result.setData(adminList);
 
         response.getWriter().println(gson.toJson(result));
     }
 
-    private void deleteUser(HttpServletRequest request, HttpServletResponse response,String id) throws IOException {
-        int i = service.deleteUser(id);
-        Result result = new Result();
-        result.setCode(0);
-        response.getWriter().println(gson.toJson(result));
-    }
-
     private void deleteAdmins(HttpServletRequest request, HttpServletResponse response, String id) throws IOException {
-        int i = service.deletAdmins(id);
+        int i = adminService.deletAdmins(id);
         Result result = new Result();
         result.setCode(0);
         response.getWriter().println(gson.toJson(result));
     }
 
-    private void allUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<User> userList = service.queryAllAUsers();
-        Result result = new Result();
-        result.setCode(0);
-        result.setData(userList);
-        response.getWriter().println(gson.toJson(result));
-    }
+
 }
