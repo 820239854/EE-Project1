@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter("/api/*")
+@WebFilter("/api/admin/*")
 public class Filter implements javax.servlet.Filter {
     public void destroy() {
     }

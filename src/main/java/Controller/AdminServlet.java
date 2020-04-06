@@ -35,11 +35,6 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } else if ("getType".equals(which)) {
-            getTypes(request, response);
-        } else if (which.contains("getGoodsByType")) {
-            String typeId = request.getParameter("typeId");
-            getGoodsByType(request, response, typeId);
         } else if (which.contains("deleteOrder")) {
            /* String id = request.getParameter("id");
             deleteOrder(request, response, id);*/
@@ -51,11 +46,6 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
     private void getRepliedMsg(HttpServletRequest request, HttpServletResponse response) {
     }
 
-    private void getGoodsByType(HttpServletRequest request, HttpServletResponse response, String typeId) {
-    }
-
-    private void getTypes(HttpServletRequest request, HttpServletResponse response) {
-    }
 
     private void getNoReplyMsg(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
         List<Message> massageList = adminService.getNoReplyMsg();
@@ -78,9 +68,7 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
             getSearchAdmins(request, response);
         } else if ("changePwd".equals(which)) {
             changePwd(request, response);
-        } else if ("addType".equals(which)) {
-            addType(request, response);
-        } else if ("addGoods".equals(which)) {
+        }  else if ("addGoods".equals(which)) {
             addGoods(request, response);
         } else if ("imgUpload".equals(which)) {
             imgUpload(request, response);
@@ -93,9 +81,6 @@ public class AdminServlet extends javax.servlet.http.HttpServlet {
     }
 
     private void reply(HttpServletRequest request, HttpServletResponse response) {
-    }
-
-    private void addType(HttpServletRequest request, HttpServletResponse response) {
     }
 
     private void imgUpload(HttpServletRequest request, HttpServletResponse response) {

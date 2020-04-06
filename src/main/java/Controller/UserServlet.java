@@ -22,7 +22,6 @@ public class UserServlet extends HttpServlet {
     private Gson gson = new Gson();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 
 
